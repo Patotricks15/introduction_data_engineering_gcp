@@ -1,0 +1,2 @@
+google-cloud-bigquery==3.35.1
+pandas==2.3.1
