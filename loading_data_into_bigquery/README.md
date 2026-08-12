@@ -76,3 +76,13 @@ GCP_PROJECT_ID="your-project-id" GCP_LOCATION="southamerica-east1" ./run.sh
 ```
 
 The script initializes and applies Terraform, creates a virtual environment, installs dependencies, loads the data, and runs `terraform destroy` through an exit trap. Terraform state remains local and contains no service account key.
+
+## Concepts
+
+| Concept | Definition + Use |
+|---------|------------------|
+| **Batch Ingestion** | A data-loading pattern that processes a bounded dataset in one operation, used here to load the public `tips` CSV into BigQuery. |
+| **DataFrame** | An in-memory tabular data structure for reading and preparing data, provided here by pandas before the BigQuery load. |
+| **Explicit Schema** | A predefined set of column names and data types, used to keep the BigQuery table structure predictable and validated. |
+| **Managed Table** | A table whose data and storage lifecycle are managed by BigQuery, used here as the destination for the loaded rows. |
+| **Infrastructure as Code** | The practice of defining cloud resources declaratively, used here through Terraform to create and destroy the BigQuery resources. |

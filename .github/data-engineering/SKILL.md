@@ -171,6 +171,27 @@ Every project README must include:
 4. **Prerequisites** — tools, permissions, and auth steps
 5. **Run** — exact commands to execute the project end to end
 6. **Teardown note** — explain that `run.sh` destroys resources automatically
+7. **Concepts** — the final README section, containing a quick-reference table of the concepts demonstrated by the project
+
+### Concepts guide conventions
+
+- Always place `## Concepts` at the end of the README, after every operational and validation section.
+- Use a two-column table with the headers `Concept` and `Definition + Use`.
+- Include only concepts that the project actually demonstrates.
+- Define each concept in one concise sentence and state how or why it is used in the project.
+- Prefer foundational data engineering and platform concepts over product feature names alone.
+
+```markdown
+## Concepts
+
+| Concept | Definition + Use |
+|---------|------------------|
+| **ACID** | A transaction model for reliable and consistent data changes, used for critical transactions. |
+| **Time Travel** | A versioning feature for accessing previous data versions, used for auditing and recovery. |
+| **Schema Evolution** | The ability to change data structures over time, used as business requirements change. |
+| **Snapshot Isolation** | A concurrency control mechanism that provides consistent reads while transactions run concurrently. |
+| **Rollback** | A recovery mechanism that undoes changes when a transaction fails or an incorrect change must be reverted. |
+```
 
 ### Cloud architecture diagram conventions
 
@@ -210,6 +231,12 @@ GCP_PROJECT_ID=your-project-id ./run.sh
 ```
 
 Resources are destroyed automatically when the script finishes or fails.
+
+## Concepts
+
+| Concept | Definition + Use |
+|---------|------------------|
+| **<Concept>** | <Concise definition and how it is used in this project.> |
 ```
 
 ---

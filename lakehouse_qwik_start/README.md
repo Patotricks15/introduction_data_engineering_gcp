@@ -69,3 +69,13 @@ PYTHONPATH=. python3 -m unittest discover -s tests -v
 terraform -chdir=terraform init -backend=false
 terraform -chdir=terraform validate
 ```
+
+## Concepts
+
+| Concept | Definition + Use |
+|---------|------------------|
+| **Data Lake** | A storage layer for raw or lightly processed data, implemented here with CSV objects in Cloud Storage as the system of record. |
+| **Lakehouse** | An architecture that combines data lake storage with warehouse-style querying and governance, implemented here through Cloud Storage, BigLake, and BigQuery. |
+| **External Table** | A table whose data remains outside BigQuery-managed storage, used to query the Cloud Storage files with SQL. |
+| **Delegated Access** | An access model in which a managed identity reads data on behalf of users, implemented with the BigQuery connection service account and bucket-level permissions. |
+| **Column-Level Security** | A governance control that restricts access to sensitive columns, applied here to customer address, postal code, and phone data through policy tags. |

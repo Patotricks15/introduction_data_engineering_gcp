@@ -81,3 +81,13 @@ terraform -chdir=terraform validate
 python3 -m unittest discover -s tests -v
 bash -n run.sh
 ```
+
+## Concepts
+
+| Concept | Definition + Use |
+|---------|------------------|
+| **Change Data Capture (CDC)** | A pattern that captures inserts, updates, and deletes from a source system, used here to replicate PostgreSQL changes continuously into BigQuery. |
+| **Write-Ahead Log (WAL)** | PostgreSQL's ordered record of database changes, used by Datastream as the source of committed change events. |
+| **Logical Replication** | A replication method that exposes row-level changes through publications and replication slots, used to make the `orders` table available to Datastream. |
+| **Backfill** | An initial copy of existing source data before ongoing changes are streamed, used to establish the complete BigQuery replica. |
+| **Eventual Consistency** | A consistency model in which replicas converge after a short delay, reflected by polling BigQuery until the new order becomes visible. |
