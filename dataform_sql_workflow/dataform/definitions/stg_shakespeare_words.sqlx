@@ -1,0 +1,21 @@
+config {
+  type: "table",
+  description: "Frequently used words from the public Shakespeare corpus.",
+  tags: ["daily"],
+  columns: {
+    word: "Normalized word from the source corpus.",
+    corpus: "Shakespeare work containing the word.",
+    word_count: "Number of occurrences in the work."
+  },
+  assertions: {
+    nonNull: ["word", "corpus", "word_count"],
+    rowConditions: ["word_count >= 100"]
+  }
+}
+
+SELECT
+  LOWER(word) AS word,
+  corpus,
+  word_count
+FROM `bigquery-public-data.samples.shakespeare`
+WHERE word_count >= 100

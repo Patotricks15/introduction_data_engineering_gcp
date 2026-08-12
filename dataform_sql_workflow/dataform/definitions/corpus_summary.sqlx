@@ -1,0 +1,17 @@
+config {
+  type: "table",
+  description: "Word-frequency metrics by Shakespeare work.",
+  tags: ["daily"],
+  assertions: {
+    uniqueKey: ["corpus"],
+    nonNull: ["corpus", "distinct_words", "total_occurrences"]
+  }
+}
+
+SELECT
+  corpus,
+  COUNT(DISTINCT word) AS distinct_words,
+  SUM(word_count) AS total_occurrences,
+  ARRAY_AGG(STRUCT(word, word_count) ORDER BY word_count DESC LIMIT 5) AS top_words
+FROM ${ref("stg_shakespeare_words")}
+GROUP BY corpus
