@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>External Iceberg Table Architecture</title>
+  <style>
+    :root {
+      --blue: #1a73e8;
+      --blue-dark: #174ea6;
+      --canvas: #f4f7fb;
+      --ink: #202124;
+      --muted: #5f6368;
+      --surface: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; min-width: 1040px; }
+    body {
+      margin: 0;
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: "Google Sans", "Segoe UI", sans-serif;
+    }
+    .page { padding: 25px 30px 28px; }
+    h1 { margin: 0 0 7px; font-size: 25px; font-weight: 600; letter-spacing: 0; }
+    .subtitle { margin: 0 0 18px; color: var(--muted); font-size: 14px; }
+    .cloud-zone {
+      position: relative;
+      display: grid;
+      min-height: 350px;
+      padding: 68px 26px 26px;
+      grid-template-columns: 1.15fr 76px 1fr 76px 1.15fr;
+      align-items: center;
+      border: 1px solid #8ab4f8;
+      border-radius: 8px;
+      background: #fbfdff;
+    }
+    .zone-label {
+      position: absolute;
+      top: 18px;
+      left: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #3c4043;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .cloud-mark { display: grid; grid-template-columns: 7px 7px; gap: 2px; }
+    .cloud-mark span { width: 7px; height: 7px; border-radius: 50%; }
+    .cloud-mark span:nth-child(1) { background: #4285f4; }
+    .cloud-mark span:nth-child(2) { background: #ea4335; }
+    .cloud-mark span:nth-child(3) { background: #fbbc04; }
+    .cloud-mark span:nth-child(4) { background: #34a853; }
+    .service {
+      display: flex;
+      min-height: 220px;
+      padding: 20px 16px;
+      flex-direction: column;
+      align-items: center;
+      border: 1px solid #d9e0ea;
+      border-top: 4px solid var(--blue);
+      border-radius: 8px;
+      background: var(--surface);
+      text-align: center;
+      box-shadow: 0 2px 7px rgba(60, 64, 67, 0.09);
+    }
+    .service img { width: 54px; height: 54px; margin-bottom: 12px; object-fit: contain; }
+    .service h2 { margin: 0 0 8px; font-size: 15px; font-weight: 600; letter-spacing: 0; }
+    .service p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .service code { color: var(--blue-dark); font-size: 10px; }
+    .storage-files {
+      display: grid;
+      width: 100%;
+      margin-top: 12px;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .storage-files span {
+      padding: 7px 4px;
+      border: 1px solid #aecbfa;
+      border-radius: 4px;
+      background: #f8fbff;
+      color: var(--blue-dark);
+      font-size: 9px;
+    }
+    .connector { position: relative; height: 100%; }
+    .connector::before {
+      position: absolute;
+      top: 50%;
+      right: 16px;
+      left: 9px;
+      height: 2px;
+      background: var(--blue);
+      content: "";
+    }
+    .connector::after {
+      position: absolute;
+      top: calc(50% - 5px);
+      right: 8px;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-left: 8px solid var(--blue);
+      content: "";
+    }
+    .connector span {
+      position: absolute;
+      top: calc(50% - 39px);
+      right: 0;
+      left: 0;
+      color: var(--blue-dark);
+      font-size: 9px;
+      font-weight: 600;
+      line-height: 1.35;
+      text-align: center;
+    }
+    .ownership {
+      position: absolute;
+      right: 23px;
+      bottom: 10px;
+      color: #137333;
+      font-size: 10px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <h1>Querying Apache Iceberg Data with BigQuery</h1>
+    <p class="subtitle">BigQuery queries an open table format in Cloud Storage without loading a managed copy.</p>
+    <section class="cloud-zone" aria-label="Google Cloud external Iceberg table architecture">
+      <div class="zone-label">
+        <span class="cloud-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        Google Cloud
+      </div>
+      <article class="service">
+        <img src="https://icon.icepanel.io/GCP/svg/Cloud-Storage.svg" alt="Cloud Storage icon">
+        <h2>Cloud Storage Iceberg Warehouse</h2>
+        <p>Open table layout managed by Apache Iceberg</p>
+        <div class="storage-files">
+          <span>Metadata JSON</span>
+          <span>Parquet data</span>
+          <span>Manifest list</span>
+          <span>Manifest files</span>
+        </div>
+      </article>
+      <div class="connector"><span>Delegated<br>object reads</span></div>
+      <article class="service">
+        <img src="https://icon.icepanel.io/GCP/svg/BigQuery.svg" alt="BigQuery icon">
+        <h2>Cloud Resource Connection</h2>
+        <p>Managed service account<br><code>roles/storage.objectViewer</code><br>Reads metadata and data files</p>
+      </article>
+      <div class="connector"><span>Iceberg<br>metadata URI</span></div>
+      <article class="service">
+        <img src="https://icon.icepanel.io/GCP/svg/BigQuery.svg" alt="BigQuery icon">
+        <h2>BigQuery External Table</h2>
+        <p><code>external_iceberg.tips_iceberg</code><br>Standard SQL analytics<br>No BigQuery-managed data copy</p>
+      </article>
+      <div class="ownership">Cloud Storage remains the source of truth.</div>
+    </section>
+  </main>
+</body>
+</html>

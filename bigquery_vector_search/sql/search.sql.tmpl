@@ -1,0 +1,27 @@
+WITH query_embedding AS (
+  SELECT ml_generate_embedding_result AS embedding
+  FROM ML.GENERATE_EMBEDDING(
+    MODEL `__PROJECT_ID__.__DATASET_ID__.embedding_model`,
+    (SELECT @query_text AS content),
+    STRUCT(
+      TRUE AS flatten_json_output,
+      'RETRIEVAL_QUERY' AS task_type,
+      768 AS output_dimensionality
+    )
+  )
+  WHERE ml_generate_embedding_status = ''
+)
+SELECT
+  base.document_id,
+  base.title,
+  base.tags,
+  base.score,
+  distance
+FROM VECTOR_SEARCH(
+  TABLE `__PROJECT_ID__.__DATASET_ID__.document_embeddings`,
+  'embedding',
+  (SELECT embedding FROM query_embedding),
+  top_k => 5,
+  distance_type => 'COSINE'
+)
+ORDER BY distance;

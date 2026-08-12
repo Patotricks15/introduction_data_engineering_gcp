@@ -1,0 +1,45 @@
+CREATE OR REPLACE TABLE `__PROJECT_ID__.__DATASET_ID__.documents` AS
+SELECT
+  CAST(id AS STRING) AS document_id,
+  title,
+  CONCAT(
+    title,
+    '\n',
+    SUBSTR(REGEXP_REPLACE(body, r'<[^>]+>', ' '), 1, 4000)
+  ) AS content,
+  tags,
+  score
+FROM `bigquery-public-data.stackoverflow.posts_questions`
+WHERE
+  REGEXP_CONTAINS(LOWER(tags), r'(bigquery|dataflow|apache-beam|etl)')
+  AND title IS NOT NULL
+  AND body IS NOT NULL
+ORDER BY score DESC
+LIMIT 100;
+
+CREATE OR REPLACE MODEL `__PROJECT_ID__.__DATASET_ID__.embedding_model`
+REMOTE WITH CONNECTION `__CONNECTION_ID__`
+OPTIONS (ENDPOINT = 'text-embedding-005');
+
+CREATE OR REPLACE TABLE `__PROJECT_ID__.__DATASET_ID__.document_embeddings` AS
+SELECT
+  document_id,
+  title,
+  content,
+  tags,
+  score,
+  ml_generate_embedding_result AS embedding
+FROM ML.GENERATE_EMBEDDING(
+  MODEL `__PROJECT_ID__.__DATASET_ID__.embedding_model`,
+  TABLE `__PROJECT_ID__.__DATASET_ID__.documents`,
+  STRUCT(
+    TRUE AS flatten_json_output,
+    'RETRIEVAL_DOCUMENT' AS task_type,
+    768 AS output_dimensionality
+  )
+)
+WHERE ml_generate_embedding_status = '';
+
+CREATE OR REPLACE VECTOR INDEX document_embedding_index
+ON `__PROJECT_ID__.__DATASET_ID__.document_embeddings`(embedding)
+OPTIONS (distance_type = 'COSINE', index_type = 'IVF');

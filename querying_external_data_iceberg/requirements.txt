@@ -1,0 +1,2 @@
+google-cloud-bigquery==3.35.1
+pyiceberg[gcsfs,pyarrow,sql-sqlite]==0.10.0
