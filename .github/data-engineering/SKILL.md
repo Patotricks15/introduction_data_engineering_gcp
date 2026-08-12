@@ -1,5 +1,5 @@
 ---
-name: gcp-data-engineering-project
+name: data-engineering
 description: >
   Create a complete GCP data engineering portfolio project from scratch.
   Use this skill when the user asks to build a new data pipeline, ingestion
@@ -39,7 +39,7 @@ introduction_data_engineering_gcp/
     │       └── requirements.txt
     ├── data/                 # Sample or seed data files (optional)
     ├── docker-compose.yml    # Local dev stack when applicable
-    ├── docs/                 # Additional documentation (optional)
+    ├── docs/                 # Architecture HTML and additional documentation
     ├── sql/                  # BigQuery SQL files when applicable
     ├── src/                  # Script-style Python when no service is needed
     ├── terraform/
@@ -166,11 +166,22 @@ before `terraform apply` when the project uses Cloud Run.
 Every project README must include:
 
 1. **One-paragraph description** — what the project does and why it exists
-2. **Cloud Architecture** — a Mermaid `flowchart LR` diagram showing all resources
+2. **Cloud Architecture** — a rendered architecture image linked to a standalone HTML diagram in `docs/`
 3. **Resources** — bullet list of every GCP resource created
 4. **Prerequisites** — tools, permissions, and auth steps
 5. **Run** — exact commands to execute the project end to end
 6. **Teardown note** — explain that `run.sh` destroys resources automatically
+
+### Cloud architecture diagram conventions
+
+- Create the diagram as `docs/cloud-architecture.html`; do not use Mermaid.
+- Draw a real architecture canvas with service boundaries, cards, directional connectors, and concise flow labels.
+- Use the official GCP service icons from `https://icon.icepanel.io/GCP/svg/<Service-Name>.svg`.
+- Use hyphens for compound service names, for example `Cloud-SQL.svg` and `Cloud-Storage.svg`.
+- Keep the Google Cloud visual style: white service cards, light canvas, blue connectors, subtle borders, and the Google four-color mark on the cloud boundary.
+- Show only the Google Cloud architecture by default. Do not include `run.sh`, Terraform, Python scripts, or the local environment unless they are runtime components required to understand the deployed system.
+- Render the HTML to `docs/cloud-architecture.png`, verify that icons and labels are visible without clipping, and embed the PNG in the README.
+- Make the embedded image link to `docs/cloud-architecture.html` so readers can open the standalone diagram.
 
 ```markdown
 # <Project Title>
@@ -179,22 +190,7 @@ Every project README must include:
 
 ## Cloud Architecture
 
-```mermaid
-flowchart LR
-  subgraph External[Local Environment]
-    Source[Data source]
-    Code[Python pipeline]
-    Terraform[Terraform]
-  end
-
-  subgraph GCP[Google Cloud]
-    IAM[IAM / Service Account]
-    Resource[GCP Service]
-  end
-
-  Terraform -->|provision| IAM
-  Code -->|ADC| Resource
-```
+[![GCP cloud architecture](docs/cloud-architecture.png)](docs/cloud-architecture.html)
 
 ## Resources
 
