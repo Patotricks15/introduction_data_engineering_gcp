@@ -31,6 +31,7 @@ A collection of self-contained, portfolio-ready data engineering projects on Goo
 | Project | Summary |
 |---------|---------|
 | [Dataform SQL Workflow](dataform_sql_workflow/README.md) | Publishes and executes SQLX transformations and data quality assertions over public BigQuery data. |
+| [BigQuery Retail Data Warehouse](bigquery_retail_data_warehouse/README.md) | Combines nested JSON, ARRAY/STRUCT transformations, JOINs, UNION ALL, dimensional modeling, and date-partitioned reporting tables. |
 
 ## Data Quality
 
