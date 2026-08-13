@@ -1,0 +1,4 @@
+{"customer_id":"C-001","full_name":"Ana Costa","email":"ana@example.com","country":"BR","consent":true}
+{"customer_id":"C-002","full_name":"Bruno Lima","email":"bruno@example.com","country":"BR","consent":true}
+{"customer_id":"C-003","full_name":"Carla Souza","email":"carla@example.com","country":"BR","consent":false}
+{"customer_id":"C-004","full_name":"Diego Alves","email":"diego@example.com","country":"BR","consent":true}

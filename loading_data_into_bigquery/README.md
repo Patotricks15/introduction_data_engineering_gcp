@@ -4,30 +4,9 @@ This project uses pandas to download the public `tips` dataset and load it into 
 
 ## Cloud Architecture
 
-```mermaid
-flowchart LR
-	subgraph External[Local Environment]
-		Source[Public tips dataset]
-		Loader[Python and pandas loader]
-		Terraform[Terraform]
-		Source -->|HTTPS| Loader
-	end
+[![GCP cloud architecture](docs/cloud-architecture.png)](docs/cloud-architecture.html)
 
-	subgraph GCP[Google Cloud Project]
-		IAM[Google Cloud IAM]
-
-		subgraph BigQuery[BigQuery]
-			API[BigQuery API]
-			Dataset[Dataset: pandas_demo]
-			Table[Table: tips]
-			API --> Dataset --> Table
-		end
-	end
-
-	Terraform -->|ADC: provision resources| IAM
-	IAM --> API
-	Loader -->|ADC: load CSV rows| API
-```
+The local Python loader downloads the public `tips` CSV over HTTPS, prepares it with pandas, and loads the rows into the Terraform-provisioned BigQuery table using Application Default Credentials.
 
 ## Resources
 

@@ -1,0 +1,5 @@
+{"order_id":"ORD-001","customer_id":"C-001","order_date":"2026-08-01","status":"SHIPPED","amount":"420.00"}
+{"order_id":"ORD-002","customer_id":"C-002","order_date":"2026-08-02","status":"PAID","amount":"189.90"}
+{"order_id":"ORD-003","customer_id":"C-003","order_date":"2026-08-03","status":"SHIPPED","amount":"780.50"}
+{"order_id":"ORD-004","customer_id":"C-001","order_date":"2026-08-04","status":"CANCELLED","amount":"99.00"}
+{"order_id":"ORD-005","customer_id":"C-004","order_date":"2026-08-05","status":"PAID","amount":"1250.00"}
